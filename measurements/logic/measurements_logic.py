@@ -16,12 +16,13 @@ def update_measurement(var_pk, new_var):
     measurement.value = new_var["value"]
     measurement.unit = new_var["unit"]
     measurement.place = new_var["place"]
-    measurement.dateTime = datetime.strptime(new_var["dateTime"], "%Y-%m-%dT%H:%M:%S.%FZ")
+    measurement.dateTime = datetime.strptime(new_var["dateTime"], "%Y-%m-%dT%H:%M:%S.%fZ")
     measurement.save()
     return measurement
 
 def create_measurement(var):
-    measurement = Measurement(variable=var["variable"], value=var["value"], unit=var["unit"], place=var["place"], dateTime=var["dateTime"])
+    measurement = Measurement(variable=Variable.objects.get(pk=var["variable"]), value=var["value"], unit=var["unit"], place=var["place"], dateTime=datetime.strptime(var["dateTime"], "%Y-%m-%dT%H:%M:%S.%fZ"))
+    measurement.save()
     return measurement
 
 def delete_measurement(var_pk):
